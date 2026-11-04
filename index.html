@@ -19,6 +19,13 @@ body{background:radial-gradient(circle at 80% -10%,#ffe5ef 0,transparent 38%),va
 @media(max-width:760px){.side{border-right:0;border-bottom:1px solid #f5cfdf}.sidekitty{display:none}.nav button{background:#fff8fb;border:1px solid #f8e2eb}.kitty-hero{padding:14px;gap:12px;min-height:135px}.hero-img{width:85px;height:85px;border-radius:22px}.prop-bread{font-size:22px;right:2px;bottom:10px}.prop-study{left:16px;top:30px;width:51px;height:16px}.prop-study span{width:17px;height:14px;border-width:2px;border-radius:5px}.prop-study i{left:15px;right:15px;top:5px;height:4px}.prop-speaker{left:10px;top:8px;width:60px;height:60px}.prop-speaker .band{left:12px;top:2px;width:36px;height:24px;border-width:5px}.prop-speaker .ear{top:23px;width:14px;height:22px;border-width:3px}.hero-copy h2{font-size:23px}.hero-copy p{font-size:11px}.hero-quote{font-size:11px}.hero-kicker{font-size:9px}.main{padding-top:17px}}
 @media(max-width:390px){.hero-img{width:63px;height:63px}.hero-copy h2{font-size:20px}}
 
+
+.matrix-curricular-year{font-weight:800;background:#fff1f7;white-space:nowrap;min-width:60px}
+.grade-matrix-sort-button{width:100%;appearance:none;border:0;background:transparent;color:inherit;font:inherit;font-weight:750;cursor:pointer;padding:4px 2px;display:flex;justify-content:center;align-items:center;gap:5px}
+.grade-matrix-sort-button span{color:#bd6a91;font-size:10px}
+.grade-matrix-sort-button.is-sorted{color:#aa1e61}
+.grade-matrix-sort-button:hover{color:#d82b7f}
+.grade-matrix-sort-button:focus-visible{outline:2px solid #d82b7f;outline-offset:2px;border-radius:5px}
 .matrix-scroll{overflow-x:auto;max-width:100%}.matrix-table{border-collapse:separate;border-spacing:0;width:100%;min-width:760px;font-size:12px}.matrix-table th,.matrix-table td{border-right:1px solid #efd6e2;border-bottom:1px solid #efd6e2;padding:8px 9px;text-align:center}.matrix-table th{position:sticky;top:0;background:#ffe6f1;color:#7a2850;z-index:1}.matrix-uc{width:115px;font-weight:750;background:#fff0f6}.matrix-block{min-width:155px;width:170px;text-align:left!important;background:#fffafd;vertical-align:middle}.matrix-block b{display:block;margin-bottom:0}.matrix-block select{width:100%;max-width:160px;border-radius:8px;border:1px solid #edd1df;background:white;font:inherit;padding:6px}.matrix-module{text-align:left!important;min-width:145px;background:#fffafd}.matrix-cell{position:relative;min-width:95px}.matrix-cell input{font:inherit;text-align:center;outline:none;width:100%;min-width:58px;border:1px solid transparent;border-radius:6px;padding:6px 12px 6px 4px;background:transparent;color:#372832}.matrix-cell input:focus{background:white;border-color:#ef70a7}.matrix-best{background:#ffe1ef!important}.matrix-best input{color:#a51957;font-weight:800}.best-star{position:absolute;right:5px;top:10px;color:#cc2971;font-size:11px;pointer-events:none}.matrix-pass .matrix-block,.matrix-pass .matrix-module{background:#ffd3e6}.matrix-fail .matrix-block,.matrix-fail .matrix-module{background:#fff0ae}.matrix-pass .matrix-block select{background:#fff3f8}.matrix-fail .matrix-block select{background:#fff9dc}.matrix-legend{display:flex;flex-wrap:wrap;gap:15px;margin-bottom:15px;font-size:12px;color:#674e5c}.matrix-legend span{display:flex;align-items:center;gap:6px}.matrix-legend i{display:inline-block;width:17px;height:14px;border:1px solid #e8ccda;border-radius:3px}.key-best,.key-pass{background:#ffd3e6}.key-fail{background:#fff0ae}.key-neutral{background:#fffafd}@media(max-width:760px){.matrix-table{font-size:11px}.matrix-table th,.matrix-table td{padding:7px 5px}}
 .matrix-module-pass .matrix-module{background:#ffd3e6!important;color:#712044;font-weight:700}.matrix-module-fail .matrix-module{background:#fff0ae!important;color:#72521a;font-weight:700}.matrix-module-pending .matrix-module{background:#f3f0f2!important;color:#645961}.matrix-lowest{background:#fff0ae!important}.matrix-lowest input{color:#795600;font-weight:800}.matrix-lowest .best-star{color:#ae7c00}.matrix-block.matrix-pass{background:#ffd3e6}.matrix-block.matrix-fail{background:#fff0ae}.matrix-block.matrix-pending{background:#f3f0f2}.module-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:16px}.module-summary .stat{border:1px solid #f7d3e5}.module-summary .stat:nth-child(1){background:#ffebf4}.module-summary .stat:nth-child(2){background:#fff7d8}@media(max-width:700px){.module-summary{grid-template-columns:1fr}}
 /* Dias anteriores a hoje com preenchimento rosa suave, mantendo a data atual destacada. */
@@ -79,6 +86,19 @@ body.portal-help-open{overflow:hidden}
 .timeline-days.past{background:#f3f3f5;color:#6e6e7c;border-color:#e1e1e7}
 .timeline-days.completed{background:#e8f7ec;color:#21784c;border-color:#c6e8d0}
 @media(max-width:520px){.timeline-status-group{justify-content:flex-start}.timelineitem>div:nth-child(2){flex-wrap:wrap}}
+
+/* Cabeçalhos de ordenação da tabela Módulos */
+.modules-sort-table th .module-sort-button{display:inline-flex;align-items:center;gap:7px;border:0;background:transparent;padding:4px 2px;color:inherit;font:inherit;letter-spacing:inherit;text-transform:inherit;font-weight:750;cursor:pointer;text-align:left}
+.modules-sort-table th .module-sort-button:hover,.modules-sort-table th .module-sort-button.is-sorted{color:#c21c6c}
+.modules-sort-table th .module-sort-button:focus-visible{outline:2px solid #ed79ae;outline-offset:3px;border-radius:4px}
+.modules-sort-table .module-sort-icon{font-size:12px;min-width:12px;color:#cb7a9c;display:inline-block}
+.modules-sort-table th[aria-sort="ascending"] .module-sort-icon,.modules-sort-table th[aria-sort="descending"] .module-sort-icon{color:#c21c6c}
+
+.matrix-table .matrix-uc.matrix-uc-approved{
+ background:#f5a8cc!important;
+ color:#6f1647;
+ font-weight:850;
+}
 </style><style>
 #subjectCards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,390px),1fr));gap:16px;align-items:start}
 .uc-progress-card{padding:22px}.uc-progress-head{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:14px}.uc-progress-head h3{margin:4px 0;font-size:23px}.uc-count{background:#ffe1ee;border-radius:999px;color:#7c2547;font-weight:700;padding:9px 12px;white-space:nowrap;font-size:12px}.uc-blocks{margin-top:15px;display:grid;gap:9px}.uc-block{border:1px solid #f5e3eb;background:#fffafd;border-radius:12px;padding:13px;display:flex;align-items:center;justify-content:space-between;gap:12px}.uc-block-info{min-width:0}.uc-block-info b{font-size:14px}.uc-block-info .micro{margin-top:4px;color:#97687c}.uc-block-right{text-align:right;flex-shrink:0}.uc-dots{display:flex;justify-content:flex-end;gap:4px;margin-top:8px}.uc-dots span{width:13px;height:7px;background:#f5e4a9;border-radius:5px}.uc-dots span.checked{background:#ee83b7}@media(max-width:560px){.uc-progress-head{align-items:flex-start;flex-direction:column}}
@@ -422,7 +442,7 @@ body:not(.auth-locked)>.login-screen{display:none}
   <div class="calc-cards" id="calcCards"></div>
   <p class="sub" style="margin-top:12px">Rosa: nota ≥100 · Amarelo: nota inferior a 100 · Cinzento: sem informação suficiente. As médias de UC e global só são definitivas após preencher as componentes obrigatórias e confirmar as regras académicas atuais.</p>
 </section>
-<section id="grades" class="section"><div class="toolbar"><select class="field" id="gradeCurricularYear" aria-label="Filtrar avaliações por ano curricular" onchange="renderGrades();renderGradeMatrix()"><option value="all">Todos os anos</option><option value="1">1.º ano</option><option value="2">2.º ano</option><option value="3">3.º ano</option><option value="4" selected>4.º ano</option><option value="5">5.º ano</option><option value="6">6.º ano</option></select><select class="field" id="gradeYear"><option value="all">Todos os anos letivos</option><option value="Por confirmar">Ano por confirmar</option><option value="26/27">2026/27</option><option value="25/26">2025/26</option><option value="24/25">2024/25</option><option value="23/24">2023/24</option></select><select class="field" id="gradeSubject"></select></div><div id="futureGradeInfo"></div><div class="card" style="padding:18px;margin-bottom:16px"><div class="cardhead"><h2>Quadro de notas por bloco e módulo</h2><span class="micro">Consulta automática · notas editadas apenas em Módulos</span></div><p class="micro" style="margin:4px 0 12px">Cada módulo assume automaticamente a cor da melhor classificação: rosa para ≥100/200 (ou ≥10/20 nas notas finais), amarelo abaixo desse mínimo e cinzento sem nota. Teste RC é uma melhoria do Teste e não conta como outro módulo no progresso. Teste e Teste RC partilham o estado de aprovação: uma nota ≥100 aprova o módulo. As notas individuais mantêm a sua cor e há uma única estrela para o conjunto. Os estados e as notas são geridos na aba Módulos.</p><div class="matrix-legend"><span><i class="key-best"></i> Melhor nota aprovada</span><span><i class="key-pass"></i> Módulo aprovado</span><span><i class="key-fail"></i> Módulo reprovado</span><span><i class="key-neutral"></i> Por avaliar</span></div><div class="mobile-scroll-notice">Desliza a tabela para o lado para veres todos os anos letivos ↔</div><div class="mobile-scroll-notice">Desliza horizontalmente para consultar todos os anos letivos ↔</div><div class="matrix-scroll" id="gradeMatrix"></div></div><div class="card grade-register-card" id="gradeRegisterCard" style="padding:16px" role="region" aria-label="Todos os registos de avaliação"><div class="cardhead"><h2>Todos os registos de avaliação</h2><div class="grade-register-actions"><span class="micro">Consulta automática · notas geridas em Módulos</span><button class="btn grade-expand-button" type="button" id="gradeExpandButton" onclick="toggleGradeRegisterExpand()" aria-expanded="false" aria-controls="gradeTable">⛶ Expandir</button></div></div><div class="tablewrap grade-register-table" id="gradeTable"></div></div></section></main></div>
+<section id="grades" class="section"><div class="toolbar"><select class="field" id="gradeCurricularYear" aria-label="Filtrar avaliações por ano curricular" onchange="renderGrades();renderGradeMatrix()"><option value="all">Todos os anos</option><option value="1">1.º ano</option><option value="2">2.º ano</option><option value="3">3.º ano</option><option value="4" selected>4.º ano</option><option value="5">5.º ano</option><option value="6">6.º ano</option></select><select class="field" id="gradeYear"><option value="all">Todos os anos letivos</option><option value="Por confirmar">Ano por confirmar</option><option value="26/27">2026/27</option><option value="25/26">2025/26</option><option value="24/25">2024/25</option><option value="23/24">2023/24</option></select><select class="field" id="gradeSubject"></select></div><div id="futureGradeInfo"></div><div class="card" style="padding:18px;margin-bottom:16px"><div class="cardhead"><h2>Quadro de notas por bloco e módulo</h2><span class="micro">Consulta automática · clica num cabeçalho para ordenar · notas editadas apenas em Módulos</span></div><p class="micro" style="margin:4px 0 12px">Cada módulo assume automaticamente a cor da melhor classificação: rosa para ≥100/200 (ou ≥10/20 nas notas finais), amarelo abaixo desse mínimo e cinzento sem nota. Teste RC é uma melhoria do Teste e não conta como outro módulo no progresso. Teste e Teste RC partilham o estado de aprovação: uma nota ≥100 aprova o módulo. As notas individuais mantêm a sua cor e há uma única estrela para o conjunto. Os estados e as notas são geridos na aba Módulos.</p><div class="matrix-legend"><span><i class="key-best"></i> Melhor nota aprovada</span><span><i class="key-pass"></i> Módulo aprovado</span><span><i class="key-fail"></i> Módulo reprovado</span><span><i class="key-neutral"></i> Por avaliar</span></div><div class="mobile-scroll-notice">Desliza a tabela para o lado para veres todos os anos letivos ↔</div><div class="mobile-scroll-notice">Desliza horizontalmente para consultar todos os anos letivos ↔</div><div class="matrix-scroll" id="gradeMatrix"></div></div><div class="card grade-register-card" id="gradeRegisterCard" style="padding:16px" role="region" aria-label="Todos os registos de avaliação"><div class="cardhead"><h2>Todos os registos de avaliação</h2><div class="grade-register-actions"><span class="micro">Consulta automática · notas geridas em Módulos</span><button class="btn grade-expand-button" type="button" id="gradeExpandButton" onclick="toggleGradeRegisterExpand()" aria-expanded="false" aria-controls="gradeTable">⛶ Expandir</button></div></div><div class="tablewrap grade-register-table" id="gradeTable"></div></div></section></main></div>
 <div class="modalback" id="modalBack"><div class="modal"><div class="cardhead"><h2 id="modalTitle">Novo registo</h2><button class="btn" onclick="closeModal()">✕</button></div><form id="editForm"><input type="hidden" id="entryId"><div class="formgrid"><label class="span2">Tipo de registo<select id="entryType"><option value="task">Tarefa / compromisso</option><option value="exam">Teste / exame</option><option value="grade">Nota / avaliação</option></select></label><label class="span2">Módulo / atividade<input id="entryTitle" required placeholder="Ex.: Teste, MiniEx ou estudar Respiratório"></label><label class="span2">Bloco / unidade curricular<select id="entrySubject"></select></label><label>Data / prazo<input id="entryDate" type="date"></label><label>Hora<input id="entryTime" type="time"></label><label>Estado<select id="entryStatus"><option value="todo">Por fazer</option><option value="doing">Em curso</option><option value="done">Concluído</option></select></label><label>Prioridade<select id="entryPriority"><option value="normal">Normal</option><option value="high">Alta</option><option value="low">Baixa</option></select></label><label id="valueLabel">Resultado / nota (opcional)<input id="entryValue" placeholder="Ex.: 145 ou 95,2"></label><label>Ano letivo<select id="entryYear"><option value="Por confirmar">Ano por confirmar</option><option value="26/27">2026/27</option><option value="25/26">2025/26</option><option value="24/25">2024/25</option><option value="23/24">2023/24</option></select></label><label class="span2">Observações<textarea id="entryNotes" rows="3" placeholder="Matéria, tarefas, links, notas..."></textarea></label></div><div class="formactions"><button type="button" class="btn" id="deleteBtn" style="margin-right:auto;color:var(--red);display:none">Eliminar</button><button type="button" class="btn" onclick="closeModal()">Cancelar</button><button class="btn primary" type="submit">Guardar registo</button></div></form></div></div>
 
 <script>
@@ -1095,6 +1115,46 @@ function markAcademicCompleted(subEnc,modEnc){
  else entries.push({id:'confirmed-'+Date.now(),type:'task',title:mod,subject:sub,status:'done',year:'26/27',date:'',time:'',priority:'normal',notes:'[Nova tentativa aprovada]'});
  save();
 }
+// Ordenação da tabela de módulos; filtros e pesquisa continuam independentes.
+let moduleSortKey=null, moduleSortDirection='asc';
+function setModuleSort(key){
+ if(moduleSortKey===key)moduleSortDirection=moduleSortDirection==='asc'?'desc':'asc';
+ else{moduleSortKey=key;moduleSortDirection='asc';}
+ renderTasks();
+}
+function moduleSortHeader(key,label){
+ const active=moduleSortKey===key;
+ const direction=active?moduleSortDirection:null;
+ const aria=active?(direction==='asc'?'ascending':'descending'):'none';
+ const symbol=active?(direction==='asc'?'▲':'▼'):'↕';
+ return `<th scope="col" aria-sort="${aria}"><button type="button" class="module-sort-button ${active?'is-sorted':''}" onclick="setModuleSort('${key}')" title="Ordenar ${label.toLocaleLowerCase('pt-PT')} por ordem ${active&&direction==='asc'?'decrescente':'crescente'}" aria-label="Ordenar ${label} ${active&&direction==='asc'?'decrescente':'crescente'}">${label}<span class="module-sort-icon" aria-hidden="true">${symbol}</span></button></th>`;
+}
+function moduleSortRows(rows){
+ if(!moduleSortKey)return rows;
+ const getValue=r=>{
+  switch(moduleSortKey){
+   case 'year':return r.curricularYear;
+   case 'grade':return r.bestGrade;
+   case 'date':return r.entry?.date||null;
+   case 'status':return ({active:0,completed:1,not_started:2})[moduleDisplayStatus(r)]??3;
+   case 'module':return r.mod;
+   case 'uc':return r.uc+' | '+r.sub;
+   default:return null;
+  }
+ };
+ const sign=moduleSortDirection==='asc'?1:-1;
+ return rows.sort((a,b)=>{
+  const av=getValue(a),bv=getValue(b);
+  const missingA=av===null||av===undefined||av==='';
+  const missingB=bv===null||bv===undefined||bv==='';
+  // Sem nota ou sem data fica sempre em último lugar.
+  if(missingA!==missingB)return missingA?1:-1;
+  if(missingA&&missingB)return a._initialOrder-b._initialOrder;
+  const cmp=(typeof av==='number'&&typeof bv==='number')?av-bv:
+   String(av).localeCompare(String(bv),'pt-PT',{numeric:true,sensitivity:'base'});
+  return (cmp*sign)||(a._initialOrder-b._initialOrder);
+ });
+}
 function renderTasks(){
  const counts=moduleCounts();
  $('moduleSummary').innerHTML=[['Realizados',counts.done,'Nas UC com módulos ativos'],['Por fazer',counts.pending,'Nas mesmas UC'],['Total de módulos',counts.total,`${counts.ucCount} UC em curso · Teste RC integrado no Teste`]].map(([label,n,detail])=>`<div class="card stat"><div class="label">${label}</div><div class="num">${n}</div><div class="foot">${detail}</div></div>`).join('');
@@ -1103,10 +1163,14 @@ function renderTasks(){
  const q=$('taskSearch').value.toLocaleLowerCase('pt-PT'),activityFilter=$('taskActivity')?.value||'all',subFilter=$('taskSubject').value,yearFilter=$('moduleCurricularYear').value;
  const normalize=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase('pt-PT');
  const rows=academicRows()
- .filter(x=>(yearFilter==='all'||x.curricularYear===Number(yearFilter))&&(activityFilter==='all'||(moduleDisplayStatus(x)==='active'?'active':moduleDisplayStatus(x)==='completed'?'completed':'not_started')===activityFilter)&&(!q||normalize(x.uc+' '+x.sub+' '+x.mod).includes(normalize(q)))&&(subFilter==='all'||subFilter===x.sub));
- $('taskTable').innerHTML=rows.length?`<table class="tbl"><thead><tr><th>Ano</th><th>Situação</th><th>Módulo</th><th>Unidade curricular / Bloco</th><th>Data</th><th>Nota histórica</th><th></th></tr></thead><tbody>${rows.map(x=>{
+ .filter(x=>(yearFilter==='all'||x.curricularYear===Number(yearFilter))&&(activityFilter==='all'||(moduleDisplayStatus(x)==='active'?'active':moduleDisplayStatus(x)==='completed'?'completed':'not_started')===activityFilter)&&(!q||normalize(x.uc+' '+x.sub+' '+x.mod).includes(normalize(q)))&&(subFilter==='all'||subFilter===x.sub))
+ .map((x,i)=>{
   const grades=entries.filter(e=>e.type==='grade'&&normalize(e.subject)===normalize(x.sub)&&[normalize(x.mod),...(x.mod==='Teste'?['teste rc']:[])].includes(normalize(e.title))).map(e=>gradeNumber(e.value)).filter(v=>v!==null);
-  const best=grades.length?Math.max(...grades):null;
+  return {...x,bestGrade:grades.length?Math.max(...grades):null,_initialOrder:i};
+ });
+ moduleSortRows(rows);
+ $('taskTable').innerHTML=rows.length?`<table class="tbl modules-sort-table"><thead><tr>${moduleSortHeader('year','Ano')}${moduleSortHeader('status','Situação')}${moduleSortHeader('module','Módulo')}${moduleSortHeader('uc','Unidade curricular / Bloco')}${moduleSortHeader('date','Data')}${moduleSortHeader('grade','Nota histórica')}<th scope="col">Ações</th></tr></thead><tbody>${rows.map(x=>{
+  const best=x.bestGrade;
   return `<tr><td><b>${x.curricularYear}.º</b></td><td><span class="module-state ${moduleDisplayStatus(x)}">${moduleStatusLabel(moduleDisplayStatus(x))}</span></td><td><b>${esc(x.mod)}</b>${x.mod==='Teste'?'<div class="micro">Teste RC é melhoria, não um módulo extra</div>':''}</td><td>${esc(x.uc)}<div class="micro">${esc(x.sub)}</div></td><td>${x.entry?.date?fmt(x.entry.date)+(x.entry.time?' · '+esc(x.entry.time):''):'—'}${(x.entry?.extraDates||[]).map(d=>`<div class="micro">${fmt(d.date)} ${d.time?'· '+esc(d.time):''}</div>`).join('')}</td><td>${best!==null?calcFmt(best):'—'}</td><td><button class="tinybtn" onclick="editAcademicModule('${encodeURIComponent(x.sub)}','${encodeURIComponent(x.mod)}','${encodeURIComponent(x.uc)}',${x.curricularYear})">Gerir módulo</button></td></tr>`
  }).join('')}</tbody></table>`:'<div class="empty">Não foram encontrados módulos com estes filtros.</div>';
 }
@@ -1241,17 +1305,30 @@ function matrixState(sub){if(PREVIOUS_UC_MODULES.some(x=>x.sub===sub))return 'pa
 function updateMatrixState(sub,val){try{localStorage.setItem(matrixKey(sub),val)}catch(e){}renderGradeMatrix()}
 function matrixGrades(sub,mod,year){return entries.filter(e=>e.type==='grade'&&e.subject===sub&&e.title.toLowerCase().trim()===mod.toLowerCase().trim()&&e.year===year)}
 function changeMatrixGrade(sub,mod,year,input){const value=input.value.trim();const list=matrixGrades(sub,mod,year);let e=list[0];if(!value){if(e){entries=entries.filter(x=>x.id!==e.id);save()}return}if(e){e.value=value}else entries.push({id:'matrix-'+Date.now()+'-'+Math.random().toString(36).slice(2),type:'grade',title:mod,subject:sub,year,value,date:'',time:'',status:'todo',priority:'normal',notes:'Introduzido no quadro de notas.'});save()}
+// Ordenação independente dos filtros da tabela de avaliações.
+let gradeMatrixSortKey=null,gradeMatrixSortDirection='asc';
+function setGradeMatrixSort(key){
+ if(gradeMatrixSortKey===key)gradeMatrixSortDirection=gradeMatrixSortDirection==='asc'?'desc':'asc';
+ else{gradeMatrixSortKey=key;gradeMatrixSortDirection='asc';}
+ renderGradeMatrix();
+}
+function gradeMatrixSortHeader(key,label){
+ const active=gradeMatrixSortKey===key;
+ const direction=gradeMatrixSortDirection;
+ const aria=active?(direction==='asc'?'ascending':'descending'):'none';
+ const symbol=active?(direction==='asc'?'▲':'▼'):'↕';
+ return `<th scope="col" aria-sort="${aria}"><button type="button" class="grade-matrix-sort-button ${active?'is-sorted':''}" onclick="setGradeMatrixSort('${key}')" aria-label="Ordenar ${label} por ordem ${active&&direction==='asc'?'decrescente':'crescente'}" title="Clique para ordenar ${label.toLowerCase()}">${label} <span aria-hidden="true">${symbol}</span></button></th>`;
+}
 function renderGradeMatrix(){
 
  const target=$('gradeMatrix');if(!target)return;
  const curricularFilter=$('gradeCurricularYear')?.value||'4';
  const activeAcademicRows=academicRows().filter(r=>curricularFilter==='all'||r.curricularYear===Number(curricularFilter));
- const subjects=[...new Set(activeAcademicRows.map(r=>r.sub))];
- const rows=subjects.map(sub=>{
-  const uc=activeAcademicRows.find(r=>r.sub===sub)?.uc||SUBJECTS.find(s=>s[1]===sub)?.[0]||'Outras';
+ const groups=[...new Map(activeAcademicRows.map(r=>[r.curricularYear+'|'+normalizeAcademic(r.uc)+'|'+normalizeAcademic(r.sub),{uc:r.uc,sub:r.sub,curricularYear:r.curricularYear}])).values()];
+ const matrixRows=groups.flatMap(({uc,sub,curricularYear})=>{
   const gradeModules=entries.filter(e=>e.type==='grade'&&e.subject===sub).map(e=>e.title);
   const taskModules=entries.filter(e=>e.type!=='grade'&&e.subject===sub).map(e=>e.title);
-  const allowed=[...new Set(activeAcademicRows.filter(r=>r.sub===sub).map(r=>r.mod))];
+  const allowed=[...new Set(activeAcademicRows.filter(r=>r.sub===sub&&r.uc===uc&&r.curricularYear===curricularYear).map(r=>r.mod))];
   const seenModuleNames=new Set();
   const mods=[...new Set([...(MATRIX_MODULES[sub]||[]),...gradeModules,...taskModules])].filter(mod=>{
    if(!allowed.some(m=>academicAlias(m)===academicAlias(mod)))return false;
@@ -1298,10 +1375,68 @@ function renderGradeMatrix(){
     const title=manuallyApproved?'Aprovado (confirmado pela Francisca; nota não indicada)':mustRepeat?'Módulo por repetir'+(['Digestivo','GO'].includes(sub)?' por falta de oral':'')+', independentemente da nota anterior':chosen?(passed?'Nota desta tentativa igual ou superior a 100':'Nota desta tentativa inferior a 100'):'';
     return `<td class="matrix-cell ${className}" title="${title}"><input aria-label="${esc(sub+' — '+mod+' — '+MATRIX_YEARS[j])}" value="${esc(val)}" placeholder="—" readonly title="Altera as notas na aba Módulos" >${singleStar?'<span class="best-star">★</span>':''}</td>`;
    }).join('');
-   return `<tr class="matrix-module-${status}">${i===0?`<td class="matrix-uc" rowspan="${mods.length}">${esc(uc)}</td><td class="matrix-block matrix-${state}" rowspan="${mods.length}" title="${state==='pass'?'Aprovado':state==='fail'?'Reprovado':'Por avaliar'}" aria-label="${esc(sub)}: ${state==='pass'?'Aprovado':state==='fail'?'Reprovado':'Por avaliar'}"><b>${esc(sub)}</b></td>`:''}<td class="matrix-module" title="${status==='pass'?'Aprovado':status==='fail'?'Reprovado':'Por avaliar'}">${esc(mod)}</td>${cells}</tr>`;
-  }).join('');
+   return {uc,sub,mod,curricularYear,state,status,cells,numbers,indexInGroup:i,groupSize:mods.length,sourceIndex:0};
+  });
+ });
+ matrixRows.forEach((r,i)=>r.sourceIndex=i);
+ if(gradeMatrixSortKey){
+   const direction=gradeMatrixSortDirection==='asc'?1:-1;
+   const key=gradeMatrixSortKey;
+   const readValue=r=>{
+     if(key==='year')return r.curricularYear;
+     if(key==='uc')return r.uc;
+     if(key==='block')return r.sub;
+     if(key==='module')return r.mod;
+     if(key.startsWith('grade:')){
+       const idx=MATRIX_YEARS.indexOf(key.slice(6));
+       return idx<0?null:r.numbers[idx];
+     }
+     return null;
+   };
+   matrixRows.sort((a,b)=>{
+     const av=readValue(a),bv=readValue(b);
+     const missingA=av===null||av===undefined||av==='';
+     const missingB=bv===null||bv===undefined||bv==='';
+     if(missingA!==missingB)return missingA?1:-1;
+     if(missingA&&missingB)return a.sourceIndex-b.sourceIndex;
+     const cmp=typeof av==='number'&&typeof bv==='number'?(av-bv):String(av).localeCompare(String(bv),'pt-PT',{numeric:true,sensitivity:'base'});
+     return (cmp*direction)||(a.sourceIndex-b.sourceIndex);
+   });
+ }
+ // A UC só fica aprovada quando TODOS os módulos dos seus blocos estão concluídos.
+ // No 5.º/6.º ano, a conclusão exige igualmente nota final oficial aprovada.
+ const ucApproval=new Map();
+ for(const r of activeAcademicRows){
+  const key=r.curricularYear+'|'+normalizeAcademic(r.uc);
+  if(!ucApproval.has(key))ucApproval.set(key,{uc:r.uc,year:r.curricularYear,approved:true,count:0});
+  const acc=ucApproval.get(key);
+  acc.count++;
+  if(!r.done)acc.approved=false;
+ }
+ for(const acc of ucApproval.values()){
+  if(acc.year>=5){
+   const result=futureUcCompletion(acc.uc);
+   acc.approved=acc.approved && !!result?.passed;
+  }
+ }
+ const showCurricularYear=curricularFilter==='all';
+ const rows=matrixRows.map(r=>{
+    // Em modo ordenado, cada linha tem a sua UC, bloco e ano (sem rowspan):
+    // não se misturam os dados quando a ordem dos módulos muda.
+    const showGroup=!gradeMatrixSortKey?r.indexInGroup===0:true;
+    const span=gradeMatrixSortKey?'':` rowspan="${r.groupSize}"`;
+    const yearCell=showCurricularYear&&showGroup?`<td class="matrix-curricular-year"${span}>${r.curricularYear}.º</td>`:'';
+    const ucIsApproved=ucApproval.get(r.curricularYear+'|'+normalizeAcademic(r.uc))?.approved===true;
+    const ucCell=showGroup?`<td class="matrix-uc${ucIsApproved?' matrix-uc-approved':''}"${span}${ucIsApproved?' title="Unidade curricular aprovada: todos os blocos concluídos"':''}>${esc(r.uc)}</td>`:'';
+    const stateLabel=r.state==='pass'?'Aprovado':r.state==='fail'?'Reprovado':'Por avaliar';
+    const blockCell=showGroup?`<td class="matrix-block matrix-${r.state}"${span} title="${stateLabel}" aria-label="${esc(r.sub)}: ${stateLabel}"><b>${esc(r.sub)}</b></td>`:'';
+    const moduleCell=`<td class="matrix-module" title="${r.status==='pass'?'Aprovado':r.status==='fail'?'Reprovado':'Por avaliar'}">${esc(r.mod)}</td>`;
+    return `<tr class="matrix-module-${r.status}">${yearCell}${ucCell}${blockCell}${moduleCell}${r.cells}</tr>`;
  }).join('');
- target.innerHTML=`<table class="matrix-table"><thead><tr><th>Unidade curricular</th><th>Bloco</th><th>Módulo</th>${MATRIX_YEARS.map(y=>`<th>20${y}</th>`).join('')}</tr></thead><tbody>${rows}</tbody></table>`;renderFutureGradeInfo();
+ const yearHeader=showCurricularYear?gradeMatrixSortHeader('year','Ano'):'';
+ const headers=yearHeader+gradeMatrixSortHeader('uc','Unidade curricular')+gradeMatrixSortHeader('block','Bloco')+gradeMatrixSortHeader('module','Módulo')+MATRIX_YEARS.map(y=>gradeMatrixSortHeader('grade:'+y,'20'+y)).join('');
+ target.innerHTML=`<table class="matrix-table"><thead><tr>${headers}</tr></thead><tbody>${rows}</tbody></table>`;
+ renderFutureGradeInfo();
 }
 
 // Vista ampliada: mesma tabela e filtros, sem criar cópias dos registos.
