@@ -99,6 +99,12 @@ body.portal-help-open{overflow:hidden}
  color:#6f1647;
  font-weight:850;
 }
+
+.material-entry-edit{display:flex;align-items:stretch;flex-direction:column;gap:12px;background:#fff6fa;border:1px solid #f3c4da;border-radius:12px;padding:14px}
+.material-edit-fields{display:grid;gap:12px;flex:1;width:100%}
+.material-edit-fields label{display:grid;gap:5px;color:#92516e;font-size:12px;font-weight:700}
+.material-edit-fields input,.material-edit-fields textarea{box-sizing:border-box;display:block;width:100%;border:1px solid #eabbd0;background:#fff;border-radius:9px;padding:10px;color:#301b29;font:inherit;font-size:14px;resize:vertical}
+.material-entry-edit .material-buttons{display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap}
 </style><style>
 #subjectCards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,390px),1fr));gap:16px;align-items:start}
 .uc-progress-card{padding:22px}.uc-progress-head{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:14px}.uc-progress-head h3{margin:4px 0;font-size:23px}.uc-count{background:#ffe1ee;border-radius:999px;color:#7c2547;font-weight:700;padding:9px 12px;white-space:nowrap;font-size:12px}.uc-blocks{margin-top:15px;display:grid;gap:9px}.uc-block{border:1px solid #f5e3eb;background:#fffafd;border-radius:12px;padding:13px;display:flex;align-items:center;justify-content:space-between;gap:12px}.uc-block-info{min-width:0}.uc-block-info b{font-size:14px}.uc-block-info .micro{margin-top:4px;color:#97687c}.uc-block-right{text-align:right;flex-shrink:0}.uc-dots{display:flex;justify-content:flex-end;gap:4px;margin-top:8px}.uc-dots span{width:13px;height:7px;background:#f5e4a9;border-radius:5px}.uc-dots span.checked{background:#ee83b7}@media(max-width:560px){.uc-progress-head{align-items:flex-start;flex-direction:column}}
@@ -669,10 +675,37 @@ function materialKey(c){return academicActivityKey(c.uc,c.sub,c.mod);}
 function materialList(c){return Array.isArray(moduleMaterials[materialKey(c)])?moduleMaterials[materialKey(c)]:[];}
 function persistModuleMaterials(){localStorage.setItem(MODULE_MATERIALS_KEY,JSON.stringify(moduleMaterials));}
 function materialId(){return 'mat-'+Date.now()+'-'+Math.random().toString(36).slice(2,9);}
+let editingMaterialId=null;
 function renderModuleMaterials(){
  const c=currentAcademicModule,root=document.getElementById('academicMaterialsList');if(!c||!root)return;
  const list=materialList(c);
- root.innerHTML=list.length?list.map((m,i)=>`<div class="material-entry"><div class="material-entry-main"><b>${academicEsc(m.name||'Material')}</b><div class="micro">${m.kind==='file'?'Ficheiro privado na nuvem':m.kind==='note'?'Apontamentos':'Ligação externa'}</div>${m.kind==='note'?`<p class="material-note">${academicEsc(m.text||'')}</p>`:''}</div><div class="material-buttons">${m.kind!=='note'?`<button type="button" class="tinybtn" onclick="openModuleMaterial(${i})">Abrir ↗</button>`:''}<button type="button" class="tinybtn" onclick="deleteModuleMaterial(${i})">Remover</button></div></div>`).join(''):'<p class="micro">Ainda não tens materiais neste módulo.</p>';
+ root.innerHTML=list.length?list.map((m,i)=>{
+  const editing=m.kind!=='file'&&editingMaterialId===m.id;
+  if(editing)return `<div class="material-entry material-entry-edit"><div class="material-edit-fields"><label>Título<input type="text" class="material-edit-title" id="editMaterialName" value="${academicEsc(m.name||'')}" maxlength="200"></label><label>${m.kind==='link'?'Ligação (URL)':'Apontamentos'}${m.kind==='link'?`<input type="url" id="editMaterialContent" value="${academicEsc(m.url||'')}" placeholder="https://...">`:`<textarea id="editMaterialContent" rows="6">${academicEsc(m.text||'')}</textarea>`}</label></div><div class="material-buttons"><button type="button" class="tinybtn" onclick="saveEditedModuleMaterial('${academicEsc(m.id)}')">Guardar alterações</button><button type="button" class="tinybtn" onclick="cancelEditModuleMaterial()">Cancelar</button></div></div>`;
+  return `<div class="material-entry"><div class="material-entry-main"><b>${academicEsc(m.name||'Material')}</b><div class="micro">${m.kind==='file'?'Ficheiro privado na nuvem':m.kind==='note'?'Apontamentos':'Ligação externa'}</div>${m.kind==='note'?`<p class="material-note">${academicEsc(m.text||'')}</p>`:''}</div><div class="material-buttons">${m.kind!=='file'?`<button type="button" class="tinybtn" onclick="editModuleMaterial('${academicEsc(m.id)}')">Editar</button>`:''}${m.kind!=='note'?`<button type="button" class="tinybtn" onclick="openModuleMaterial(${i})">Abrir ↗</button>`:''}<button type="button" class="tinybtn" onclick="deleteModuleMaterial(${i})">Remover</button></div></div>`;
+ }).join(''):'<p class="micro">Ainda não tens materiais neste módulo.</p>';
+}
+function editModuleMaterial(id){
+ const c=currentAcademicModule,m=c&&materialList(c).find(x=>x.id===id);
+ if(!m||m.kind==='file')return;
+ editingMaterialId=id;renderModuleMaterials();
+ document.getElementById('editMaterialName')?.focus();
+}
+function cancelEditModuleMaterial(){editingMaterialId=null;renderModuleMaterials();}
+function saveEditedModuleMaterial(id){
+ const c=currentAcademicModule,m=c&&materialList(c).find(x=>x.id===id);
+ if(!m||m.kind==='file')return;
+ const name=document.getElementById('editMaterialName')?.value.trim();
+ const content=document.getElementById('editMaterialContent')?.value.trim();
+ if(!name||!content){alert('Preenche o título e os '+(m.kind==='link'?'dados da ligação.':'apontamentos.'));return;}
+ if(m.kind==='link'){
+  try{const u=new URL(content);if(!['http:','https:'].includes(u.protocol))throw Error();}
+  catch(e){alert('O link deve começar por https:// ou http://');return;}
+ }
+ m.name=name;
+ if(m.kind==='link')m.url=content;
+ else m.text=content;
+ persistModuleMaterials();editingMaterialId=null;renderModuleMaterials();
 }
 function addModuleMaterial(){
  const c=currentAcademicModule;if(!c)return;
