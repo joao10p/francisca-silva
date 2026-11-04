@@ -387,15 +387,7 @@ body:not(.auth-locked)>.login-screen{display:none}
 @media(max-width:580px){.materials-entry-controls{grid-template-columns:1fr}.material-entry{align-items:start;flex-direction:column}}
 
 /* Unidades curriculares do 5.º e 6.º ano: módulo visível dentro do bloco. */
-.future-inline-modules{width:100%;padding:10px 12px;border-top:1px solid #f5dce8;margin-top:10px;background:#fffafd;border-radius:0 0 12px 12px}
-.future-inline-label{font-size:10px;letter-spacing:.07em;text-transform:uppercase;font-weight:800;color:#a4547c;margin-bottom:7px}
-.future-inline-module{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:7px 0}
-.future-inline-module+.future-inline-module{border-top:1px solid #f5e1e9}
-.future-inline-module strong{display:block;font-size:13px;color:#43253a}
-.future-inline-module small{display:block;margin-top:3px;font-size:11px;color:#a15a7a}
-.future-inline-module .tinybtn{white-space:nowrap}
-@media(max-width:540px){.future-inline-module{align-items:flex-start;flex-direction:column}.future-inline-module .tinybtn{align-self:flex-end}}
-.uc-block:has(>.future-inline-modules){flex-wrap:wrap}.uc-block:has(>.future-inline-modules)>.uc-block-info{flex:1}
+.uc-tooltip-actions{display:flex;justify-content:space-between;gap:8px;margin-top:10px;padding-top:9px;border-top:1px solid #f3dce6}.uc-tooltip-actions .tinybtn{font-size:11px}
 </style></head><body class="auth-locked"><div id="loginScreen" class="login-screen" role="main" aria-label="Entrar no Portal Académico">
  <div class="login-panel">
   <div class="login-top"><div class="login-brand">♡ Francisca<span>.</span></div><div class="login-pill">MEDICINA · UBI</div></div>
@@ -1178,10 +1170,10 @@ function renderSubjects(){
   const ucRows=shownRows.filter(r=>r.uc===uc);const total=ucRows.length,done=ucRows.filter(r=>r.done).length;
   return `<div class="card uc-progress-card"><div class="uc-progress-head"><div><div class="code">${FUTURE_UCS.find(u=>normalizeAcademic(u.name)===normalizeAcademic(uc))?.year||'UNIDADE CURRICULAR'}${FUTURE_UCS.some(u=>normalizeAcademic(u.name)===normalizeAcademic(uc))?'.º ANO · UC '+esc(FUTURE_UCS.find(u=>normalizeAcademic(u.name)===normalizeAcademic(uc)).code):''}</div><h3>${esc(uc)}</h3>${ucEctsDisplay(uc)}</div><span class="uc-count">${done}/${total} módulos realizados</span></div>
    <div class="progress"><i style="width:${Math.round(100*done/total)}%"></i></div>
-   ${futureUcFinalButton(uc)}<div class="uc-blocks">${blocks.map(([name,finished,all,note])=>{
+   <div class="uc-blocks">${blocks.map(([name,finished,all,note])=>{
      finished=shownRows.filter(r=>r.uc===uc&&normalizeAcademic(r.sub)===normalizeAcademic(name)&&r.done).length;const matching=shownRows.filter(x=>x.uc===uc&&normalizeAcademic(x.sub)===normalizeAcademic(name));finished=matching.filter(x=>x.done).length;all=matching.length||all;const state=finished===all?'done':finished===0?'todo':'doing';
-     return `<div class="uc-block uc-block-hover" tabindex="0" role="button" onclick="this.focus()" aria-label="Detalhe dos módulos de ${esc(name)}"><div class="uc-block-info"><b>${esc(name)}</b>${note?`<div class="micro">${esc(note)}</div>`:''}</div><div class="uc-block-right"><span class="pill ${state}">${finished}/${all} feitos</span><div class="uc-dots">${Array.from({length:all},(_,i)=>`<span class="${i<finished?'checked':''}"></span>`).join('')}</div></div>${FUTURE_UCS.some(u=>normalizeAcademic(u.name)===normalizeAcademic(uc))?`<div class="future-inline-modules"><div class="future-inline-label">Módulo${matching.length!==1?'s':''}</div>${matching.map(r=>`<div class="future-inline-module"><span><strong>${esc(r.mod)}</strong><small>${r.done?'Concluído':isModuleActive(r.uc,r.sub,r.mod)?'Ativo':'Por iniciar'}</small></span><button type="button" class="tinybtn" onclick="event.stopPropagation();editAcademicModule('${encodeURIComponent(r.sub)}','${encodeURIComponent(r.mod)}','${encodeURIComponent(r.uc)}',${r.curricularYear})">Gerir módulo</button></div>`).join('')}</div>`:''}<div class="uc-block-tooltip"><b>${esc(name)} — módulos</b>${matching.map(r=>`<div class="uc-tooltip-line"><span>${esc(r.mod)}</span><strong class="${r.done?'uc-yes':'uc-no'}">${r.done?'✓ Feito':'○ Por fazer'}${subjectModuleGradeLabel(r)}</strong></div>${moduleObservation(r.sub,r.mod)?`<div class="uc-tooltip-note">${esc(moduleObservation(r.sub,r.mod))}</div>`:''}`).join('')}</div></div>`
-    }).join('')}</div></div>`
+     return `<div class="uc-block uc-block-hover" tabindex="0" role="button" onclick="this.focus()" aria-label="Detalhe dos módulos de ${esc(name)}"><div class="uc-block-info"><b>${esc(name)}</b>${note?`<div class="micro">${esc(note)}</div>`:''}</div><div class="uc-block-right"><span class="pill ${state}">${finished}/${all} feitos</span><div class="uc-dots">${Array.from({length:all},(_,i)=>`<span class="${i<finished?'checked':''}"></span>`).join('')}</div></div><div class="uc-block-tooltip"><b>${esc(name)} — módulos</b>${matching.map(r=>`<div class="uc-tooltip-line"><span>${esc(r.mod)}</span><strong class="${r.done?'uc-yes':'uc-no'}">${r.done?'✓ Feito':'○ Por fazer'}${subjectModuleGradeLabel(r)}</strong></div>${moduleObservation(r.sub,r.mod)?`<div class="uc-tooltip-note">${esc(moduleObservation(r.sub,r.mod))}</div>`:''}`).join('')}</div></div>`
+    }).join('')}${FUTURE_UCS.some(u=>normalizeAcademic(u.name)===normalizeAcademic(uc))?`<div class="uc-tooltip-actions"><button type="button" class="tinybtn" onclick="event.stopPropagation();editAcademicModule('${encodeURIComponent(name)}','${encodeURIComponent(matching[0]?.mod||name)}','${encodeURIComponent(uc)}',${FUTURE_UCS.find(u=>normalizeAcademic(u.name)===normalizeAcademic(uc)).year})">Gerir módulo</button><button type="button" class="tinybtn" onclick="event.stopPropagation();openFutureUcFinalGrade('${encodeURIComponent(uc)}')">Nota final</button></div>`:''}</div></div>`
  }).join('')+futureUcCards(curricularFilter,q,shownRows,activityFilter);
  if(!$('subjectCards').innerHTML)$('subjectCards').innerHTML='<div class="card empty">Não foram encontradas unidades curriculares com estes filtros.</div>';
 }
