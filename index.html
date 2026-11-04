@@ -388,6 +388,12 @@ body:not(.auth-locked)>.login-screen{display:none}
 
 /* Unidades curriculares do 5.º e 6.º ano: módulo visível dentro do bloco. */
 .uc-tooltip-actions{display:flex;justify-content:space-between;gap:8px;margin-top:10px;padding-top:9px;border-top:1px solid #f3dce6}.uc-tooltip-actions .tinybtn{font-size:11px}
+
+/* UC do 5.º/6.º ano seguem os mesmos cartões das UC do 4.º ano. */
+.uc-progress-card .uc-block-tooltip{white-space:normal;overflow-wrap:anywhere}
+.uc-progress-card .uc-tooltip-actions{display:flex;gap:8px;flex-wrap:wrap}
+.uc-progress-card .uc-block-hover:focus-visible{outline:2px solid #ef8bbb;outline-offset:2px}
+@media(hover:none){.uc-progress-card .uc-block-hover:focus .uc-block-tooltip,.uc-progress-card .uc-block-hover:focus-within .uc-block-tooltip{display:block}}
 </style></head><body class="auth-locked"><div id="loginScreen" class="login-screen" role="main" aria-label="Entrar no Portal Académico">
  <div class="login-panel">
   <div class="login-top"><div class="login-brand">♡ Francisca<span>.</span></div><div class="login-pill">MEDICINA · UBI</div></div>
@@ -1142,39 +1148,58 @@ function ucEctsDisplay(uc){
  return ects===undefined?'':`<div class="micro">${ects} ECTS</div>`;
 }
 function renderSubjects(){
- const q=$('subjectSearch').value.toLocaleLowerCase('pt-PT');
+ const q=($('subjectSearch')?.value||'').toLocaleLowerCase('pt-PT');
  const curricularFilter=$('subjectCurricularYear')?.value||'all';
  const activityFilter=$('subjectActivityFilter')?.value||'active';
+ const allRows=academicRows();
+ const shownRows=allRows.filter(r=>curricularFilter==='all'||r.curricularYear===Number(curricularFilter));
  const progressSources=SUBJECT_PROGRESS.map(([uc,blocks])=>[uc,blocks.map(b=>[...b])]);
- // Todas as UC do 5.º/6.º têm um bloco e um módulo base homónimos.
- // Os pares são definidos em ALL_ACADEMIC_MODULES e não criam novos dados no Supabase.
+ // A mesma apresentação é aplicada a todas as UC, incluindo as do 5.º/6.º ano.
+ // Os módulos base já são definidos em ALL_ACADEMIC_MODULES: não criar registos nem notas.
  for(const u of FUTURE_UCS){
   let group=progressSources.find(t=>normalizeAcademic(t[0])===normalizeAcademic(u.name));
-  if(!group){group=[u.name,[]];progressSources.push(group)}
+  if(!group){group=[u.name,[]];progressSources.push(group);}
   if(!group[1].some(b=>normalizeAcademic(b[0])===normalizeAcademic(u.name)))group[1].push([u.name,0,1]);
  }
  for(const x of [...customAcademicModules,...PREVIOUS_UC_MODULES]){
-  let group=progressSources.find(t=>t[0]===x.uc);
-  if(!group){group=[x.uc,[]];progressSources.push(group)}
+  let group=progressSources.find(t=>normalizeAcademic(t[0])===normalizeAcademic(x.uc));
+  if(!group){group=[x.uc,[]];progressSources.push(group);}
   if(!group[1].some(b=>normalizeAcademic(b[0])===normalizeAcademic(x.sub)))group[1].push([x.sub,0,1]);
  }
- const shownRows=academicRows().filter(r=>curricularFilter==='all'||r.curricularYear===Number(curricularFilter));
- // A UC aparece quando pelo menos um dos seus módulos está Ativo (independentemente de estar concluído).
- // Os blocos e o progresso continuam completos dentro de cada cartão.
- const activeUcs=new Set(shownRows.filter(r=>isModuleActive(r.uc,r.sub,r.mod)).map(r=>r.uc));
- const groups=progressSources
-  .filter(([uc])=>activityFilter!=='active'||activeUcs.has(uc))
-  .map(([uc,blocks])=>[uc,blocks.filter(([name])=>shownRows.some(r=>r.uc===uc&&normalizeAcademic(r.sub)===normalizeAcademic(name))&&(uc+' '+name).toLocaleLowerCase('pt-PT').includes(q))])
-  .filter(([,blocks])=>blocks.length);
+ const activeUcs=new Set(shownRows.filter(r=>isModuleActive(r.uc,r.sub,r.mod)).map(r=>normalizeAcademic(r.uc)));
+ const groups=progressSources.filter(([uc])=>{
+   if(activityFilter==='active'&&!activeUcs.has(normalizeAcademic(uc)))return false;
+   return !q||normalizeAcademic(uc).includes(normalizeAcademic(q))||
+     shownRows.some(r=>normalizeAcademic(r.uc)===normalizeAcademic(uc)&&normalizeAcademic(r.sub).includes(normalizeAcademic(q)));
+ }).map(([uc,blocks])=>{
+    const valid=blocks.filter(([name])=>shownRows.some(r=>normalizeAcademic(r.uc)===normalizeAcademic(uc)&&normalizeAcademic(r.sub)===normalizeAcademic(name)));
+    return [uc,valid];
+ }).filter(([,blocks])=>blocks.length);
  $('subjectCards').innerHTML=groups.map(([uc,blocks])=>{
-  const ucRows=shownRows.filter(r=>r.uc===uc);const total=ucRows.length,done=ucRows.filter(r=>r.done).length;
-  return `<div class="card uc-progress-card"><div class="uc-progress-head"><div><div class="code">${FUTURE_UCS.find(u=>normalizeAcademic(u.name)===normalizeAcademic(uc))?.year||'UNIDADE CURRICULAR'}${FUTURE_UCS.some(u=>normalizeAcademic(u.name)===normalizeAcademic(uc))?'.º ANO · UC '+esc(FUTURE_UCS.find(u=>normalizeAcademic(u.name)===normalizeAcademic(uc)).code):''}</div><h3>${esc(uc)}</h3>${ucEctsDisplay(uc)}</div><span class="uc-count">${done}/${total} módulos realizados</span></div>
-   <div class="progress"><i style="width:${Math.round(100*done/total)}%"></i></div>
-   <div class="uc-blocks">${blocks.map(([name,finished,all,note])=>{
-     finished=shownRows.filter(r=>r.uc===uc&&normalizeAcademic(r.sub)===normalizeAcademic(name)&&r.done).length;const matching=shownRows.filter(x=>x.uc===uc&&normalizeAcademic(x.sub)===normalizeAcademic(name));finished=matching.filter(x=>x.done).length;all=matching.length||all;const state=finished===all?'done':finished===0?'todo':'doing';
-     return `<div class="uc-block uc-block-hover" tabindex="0" role="button" onclick="this.focus()" aria-label="Detalhe dos módulos de ${esc(name)}"><div class="uc-block-info"><b>${esc(name)}</b>${note?`<div class="micro">${esc(note)}</div>`:''}</div><div class="uc-block-right"><span class="pill ${state}">${finished}/${all} feitos</span><div class="uc-dots">${Array.from({length:all},(_,i)=>`<span class="${i<finished?'checked':''}"></span>`).join('')}</div></div><div class="uc-block-tooltip"><b>${esc(name)} — módulos</b>${matching.map(r=>`<div class="uc-tooltip-line"><span>${esc(r.mod)}</span><strong class="${r.done?'uc-yes':'uc-no'}">${r.done?'✓ Feito':'○ Por fazer'}${subjectModuleGradeLabel(r)}</strong></div>${moduleObservation(r.sub,r.mod)?`<div class="uc-tooltip-note">${esc(moduleObservation(r.sub,r.mod))}</div>`:''}`).join('')}</div></div>`
-    }).join('')}${FUTURE_UCS.some(u=>normalizeAcademic(u.name)===normalizeAcademic(uc))?`<div class="uc-tooltip-actions"><button type="button" class="tinybtn" onclick="event.stopPropagation();editAcademicModule('${encodeURIComponent(name)}','${encodeURIComponent(matching[0]?.mod||name)}','${encodeURIComponent(uc)}',${FUTURE_UCS.find(u=>normalizeAcademic(u.name)===normalizeAcademic(uc)).year})">Gerir módulo</button><button type="button" class="tinybtn" onclick="event.stopPropagation();openFutureUcFinalGrade('${encodeURIComponent(uc)}')">Nota final</button></div>`:''}</div></div>`
- }).join('')+futureUcCards(curricularFilter,q,shownRows,activityFilter);
+  const ucRows=shownRows.filter(r=>normalizeAcademic(r.uc)===normalizeAcademic(uc));
+  const total=ucRows.length;
+  const done=ucRows.filter(r=>r.done).length;
+  const future=FUTURE_UCS.find(u=>normalizeAcademic(u.name)===normalizeAcademic(uc));
+  const heading=future?`${future.year}.º ANO · UC ${esc(future.code)}`:'UNIDADE CURRICULAR';
+  const blockCards=blocks.map(([name,_finished,_all,note])=>{
+    const matching=ucRows.filter(r=>normalizeAcademic(r.sub)===normalizeAcademic(name));
+    const finished=matching.filter(r=>r.done).length;
+    const all=matching.length;
+    const state=finished===all?'done':finished===0?'todo':'doing';
+    const details=matching.map(r=>`<div class="uc-tooltip-line"><span>${esc(r.mod)}</span><strong class="${r.done?'uc-yes':'uc-no'}">${r.done?'✓ Feito':'○ Por fazer'}${subjectModuleGradeLabel(r)}</strong></div>${moduleObservation(r.sub,r.mod)?`<div class="uc-tooltip-note">${esc(moduleObservation(r.sub,r.mod))}</div>`:''}`).join('');
+    const actions=future?`<div class="uc-tooltip-actions"><button type="button" class="tinybtn" onclick="event.stopPropagation();editAcademicModule('${encodeURIComponent(name)}','${encodeURIComponent(matching[0]?.mod||name)}','${encodeURIComponent(uc)}',${future.year})">Gerir módulo</button><button type="button" class="tinybtn" onclick="event.stopPropagation();openFutureUcFinalGrade('${encodeURIComponent(uc)}')">Nota final</button></div>`:'';
+    return `<div class="uc-block uc-block-hover" tabindex="0" role="button" onclick="this.focus()" aria-label="Ver módulos do bloco ${esc(name)}">
+       <div class="uc-block-info"><b>${esc(name)}</b>${note?`<div class="micro">${esc(note)}</div>`:''}</div>
+       <div class="uc-block-right"><span class="pill ${state}">${finished}/${all} feitos</span><div class="uc-dots">${Array.from({length:all},(_,i)=>`<span class="${i<finished?'checked':''}"></span>`).join('')}</div></div>
+       <div class="uc-block-tooltip"><b>${esc(name)} — módulos</b>${details}${actions}</div>
+    </div>`;
+  }).join('');
+  return `<div class="card uc-progress-card">
+    <div class="uc-progress-head"><div><div class="code">${heading}</div><h3>${esc(uc)}</h3>${ucEctsDisplay(uc)}</div><span class="uc-count">${done}/${total} módulos realizados</span></div>
+    <div class="progress"><i style="width:${total?Math.round(100*done/total):0}%"></i></div>
+    <div class="uc-blocks">${blockCards}</div>
+  </div>`;
+ }).join('');
  if(!$('subjectCards').innerHTML)$('subjectCards').innerHTML='<div class="card empty">Não foram encontradas unidades curriculares com estes filtros.</div>';
 }
 
