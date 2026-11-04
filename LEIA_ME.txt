@@ -1,0 +1,15 @@
+PORTAL ACADÉMICO — FRANCISCA SILVA
+===================================
+1. No Supabase > SQL Editor, executar Supabase_Francisca_Materiais.sql UMA VEZ.
+   Cria o bucket privado e políticas RLS para ficheiros dos módulos.
+2. Se o login Supabase ainda estiver com a antiga password, altere-a
+   em Authentication > Users (ou inicie sessão e use «Alterar palavra-passe»).
+   A password pretendida pelo utilizador é PacaninaCome13Pao (sem til).
+   Não é incluída no código HTML.
+3. O login Supabase exige o EMAIL real da conta. «francisca.silva» é o nome
+   de utilizador apresentado na interface, não substitui o email para autenticação.
+4. Publique index.html na Vercel (na raiz do projeto) e faça um novo deployment.
+5. Materiais: notas e links ficam no JSON de backup e sincronizados via snapshot.
+   Ficheiros ficam no Storage privado: os backups JSON guardam os METADADOS,
+   não as cópias binárias dos anexos. Os anexos mantêm-se no Supabase.
+6. Antes de atualizar o site, exporte um backup JSON pela área de Ajuda.
