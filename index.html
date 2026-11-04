@@ -618,11 +618,13 @@ const CUSTOM_MODULES_KEY='francisca_custom_curricular_modules_v1';
 let customAcademicModules=[];
 try{const v=JSON.parse(localStorage.getItem(CUSTOM_MODULES_KEY)||'[]');if(Array.isArray(v))customAcademicModules=v.filter(x=>x&&x.uc&&x.sub&&x.mod&&[1,2,3,4,5,6].includes(Number(x.curricularYear)));}catch(e){}
 // Restaurar UCs adicionadas pelo utilizador também após reabrir o HTML.
-for(const m of customAcademicModules){if(!SUBJECTS.some(s=>s[0]===m.uc&&s[1]===m.sub))SUBJECTS.push([m.uc,m.sub]);}
+for(const m of customAcademicModules){if(normalizeAcademic(m.uc)==='elementos de escolha do estudante iii'&&normalizeAcademic(m.sub)===normalizeAcademic(m.uc)&&normalizeAcademic(m.mod)===normalizeAcademic(m.uc))continue;if(!SUBJECTS.some(s=>s[0]===m.uc&&s[1]===m.sub))SUBJECTS.push([m.uc,m.sub]);}
 function persistCustomAcademicModules(){try{localStorage.setItem(CUSTOM_MODULES_KEY,JSON.stringify(customAcademicModules))}catch(e){alert('Não foi possível guardar os módulos adicionais. Exporta uma cópia de segurança.')}}
 function academicRows(){
  const defaults=ALL_ACADEMIC_MODULES.map(([uc,sub,mod,originalDone])=>({uc,sub,mod,curricularYear:FUTURE_UCS.find(u=>normalizeAcademic(u.name)===normalizeAcademic(uc))?.year||4,done:academicDone(uc,sub,mod,originalDone),entry:moduleRowSubject(uc,sub,mod)}));
- const extra=customAcademicModules.map(({uc,sub,mod,curricularYear})=>({uc,sub,mod,curricularYear:Number(curricularYear),done:academicDone(uc,sub,mod,false),entry:moduleRowSubject(uc,sub,mod)}));
+ const extra=customAcademicModules
+  .filter(({uc,sub,mod})=>!(normalizeAcademic(uc)==='elementos de escolha do estudante iii' && normalizeAcademic(sub)===normalizeAcademic(uc) && normalizeAcademic(mod)===normalizeAcademic(uc)))
+  .map(({uc,sub,mod,curricularYear})=>({uc,sub,mod,curricularYear:Number(curricularYear),done:academicDone(uc,sub,mod,false),entry:moduleRowSubject(uc,sub,mod)}));
  // 1.º, 2.º e 3.º anos: uma UC = um bloco = um módulo, com a nota final da UC (0–20).
  const earlier=PREVIOUS_YEARS_RECORDS.map(([year,code,uc,curricularYear])=>({uc,sub:uc,mod:uc,curricularYear,code,done:academicDone(uc,uc,uc,true),entry:moduleRowSubject(uc,uc,uc)}));
  const seen=new Set();
@@ -1131,10 +1133,17 @@ const ALL_ACADEMIC_MODULES=[
  ['Clínica Médica e Cirúrgica II - b','Clínica Médica e Cirúrgica II - b','Clínica Médica e Cirúrgica II - b',false],
  ['Clínica Médica e Cirúrgica II - c','Clínica Médica e Cirúrgica II - c','Clínica Médica e Cirúrgica II - c',false],
  ['Elementos de Integração V','Elementos de Integração V','Elementos de Integração V',false],
- ['Elementos de Escolha do Estudante III','Elementos de Escolha do Estudante III','Elementos de Escolha do Estudante III',false],
+ ['Elementos de Escolha do Estudante III','Curso de Oncologia','Oncologia',false],
+ ['Elementos de Escolha do Estudante III','Cursos Opcionais','Cursos Opcionais',false],
+ ['Elementos de Escolha do Estudante III','Curso de Medicina Paliativa','Medicina Paliativa',false],
  ['Prática Clínica','Prática Clínica','Prática Clínica',false],
  ['Dissertação','Dissertação','Dissertação',false]
 ];
+// Registar os blocos curriculares pré-definidos nos filtros e seletores.
+// Não cria dados de avaliação, pelo que respeita as notas já guardadas na nuvem.
+for(const [uc,sub] of ALL_ACADEMIC_MODULES){
+ if(!SUBJECTS.some(([u,b])=>u===uc&&b===sub))SUBJECTS.push([uc,sub]);
+}
 function moduleRowSubject(uc,sub,mod){
  const aliases={'HC Ind':['HC Ind','HC individual'],'HC Grupo':['HC Grupo','HC de grupo'],'Diag Dif':['Diag Dif','Diagnóstico diferencial'],'LaC':['LaC','LaC4']};
  const normalize=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim();
@@ -1256,7 +1265,7 @@ function renderSubjects(){
  for(const u of FUTURE_UCS){
   let group=progressSources.find(t=>normalizeAcademic(t[0])===normalizeAcademic(u.name));
   if(!group){group=[u.name,[]];progressSources.push(group);}
-  if(!group[1].some(b=>normalizeAcademic(b[0])===normalizeAcademic(u.name)))group[1].push([u.name,0,1]);
+  if(!group[1].length)group[1].push([u.name,0,1]);
  }
  for(const x of [...customAcademicModules,...PREVIOUS_UC_MODULES]){
   let group=progressSources.find(t=>normalizeAcademic(t[0])===normalizeAcademic(x.uc));
@@ -1313,7 +1322,8 @@ const MATRIX_MODULES={
  'Doente Geriátrico':['Teste Casos Clínicos'], 'Comunicação Clínica':['Teste','Trabalho'],
  'Competências clínicas':['LaC','HC Ind','HC Grupo','MiniEx (2)','Diag Dif'],
  'ACI':['Avaliação'],'Portefólio':['Avaliação'],'Projeto Tese':['Avaliação'],
- 'CMC I-C':['Nota final (0–20)'],'Medicina Legal e Toxicologia':['Nota final (0–20)']
+ 'CMC I-C':['Nota final (0–20)'],'Medicina Legal e Toxicologia':['Nota final (0–20)'],
+ 'Curso de Oncologia':['Oncologia'],'Cursos Opcionais':['Cursos Opcionais'],'Curso de Medicina Paliativa':['Medicina Paliativa']
 };
 for(const m of customAcademicModules){if(!MATRIX_MODULES[m.sub])MATRIX_MODULES[m.sub]=[];if(!MATRIX_MODULES[m.sub].includes(m.mod))MATRIX_MODULES[m.sub].push(m.mod);}
 const gradeNumber=v=>{const text=String(v??'').trim().replace(',','.').replace('?','');if(!text||text==='0')return null;const n=Number(text);return Number.isFinite(n)&&n>0?n:null};
